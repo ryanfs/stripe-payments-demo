@@ -2,14 +2,9 @@
 <html lang="en">
 
 <head>
-  <title>Stripe Payments Demo</title>
+  <title>Signal Intent Payments</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:site" content="@stripe">
-  <meta name="twitter:title" content="Stripe Payments Demo">
-  <meta name="twitter:description" content="Sample store accepting universal payments on the web with Stripe Elements, Payment Request, Apple Pay, Google Pay, and the Sources API.">
-  <meta name="twitter:image" content="https://stripe-payments-demo.appspot.com/images/twitter.png">
   <link rel="stylesheet" type="text/css" href="/stylesheets/store.css">
   <link rel="icon" type="image/png" sizes="104x80" href="/images/logo.png">
 </head>
@@ -17,25 +12,26 @@
 <body>
   <main id="main" class="loading">
     <header class="header">
-      <a class="shop" href="/">Stripe Payments Demo</a>
-      <a class="github" href="https://github.com/stripe/stripe-payments-demo">View on GitHub</a>
+      <!-- <a class="shop">Signal Intent</a> -->
+      <img class="logo" src="https://www.signalintent.com/wp-content/uploads/2019/07/SIGNAL-INTENT-1.png" style="" />
+
+      <!-- <a class="github" href="https://github.com/stripe/stripe-payments-demo">View on GitHub</a> -->
     </header>
     <div id="checkout">
       <div id="payment-request">
         <div id="payment-request-button"></div>
       </div>
       <form id="payment-form" method="POST" action="/orders">
-        <p class="instruction"><span>Complete</span>/<span id="generate">generate</span> your shipping and payment details below</p>
         <section>
-          <h2>Shipping &amp; Billing Information</h2>
+          <h2>Customer Information</h2>
           <fieldset class="with-state">
             <label>
               <span>Name</span>
-              <input name="name" class="field" placeholder="Jenny Rosen" required>
+              <input name="name" class="field" placeholder="Steve Jobs" required>
             </label>
             <label>
               <span>Email</span>
-              <input name="email" type="email" class="field" placeholder="jenny@example.com" required>
+              <input name="email" type="email" class="field" placeholder="sjobs@apple.com" required>
             </label>
             <label>
               <span>Address</span>

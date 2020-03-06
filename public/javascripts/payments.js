@@ -594,7 +594,7 @@
       name: 'Bancontact',
       flow: 'redirect',
       countries: ['BE'],
-      currencies: ['eur'],
+      currencies: ['eur', 'usd'],
     },
     card: {
       name: 'Card',
