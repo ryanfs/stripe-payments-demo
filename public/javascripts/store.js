@@ -21,8 +21,7 @@ class Store {
   getPaymentTotal() {
     return Object.values(this.lineItems).reduce(
       (total, {product, sku, quantity}) =>
-        total + quantity * this.products[product].skus.data[0].price,
-      0
+        total + Number(quantity) * Number(this.products[product].price), 0
     );
   }
 
@@ -81,6 +80,16 @@ class Store {
           this.products[product.id] = product;
           if (!product.skus) {
             await this.loadSkus(product.id);
+          }
+
+          if (product.metadata && product.metadata.price) {
+            product.metadata.price = (Number(product.metadata.price) * 100)
+            product.price = product.metadata.price
+          }
+
+          if (product.skus.data[0] && product.skus.data[0].price) {
+            product.metadata.price = Number(product.skus.data[0].price)
+            product.price = Number(product.skus.data[0].price)
           }
         }
         resolve();
@@ -162,37 +171,34 @@ class Store {
     let currency;
     // Build and append the line items to the payment summary.
     for (let [id, product] of Object.entries(this.products)) {
-      const randomQuantity = (min, max) => {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-      };
-      const quantity = randomQuantity(1, 2);
+      const quantity = 1 // change this to be dynamic
+
       let sku = product.skus.data[0];
-      let skuPrice = this.formatPrice(sku.price, sku.currency);
-      let lineItemPrice = this.formatPrice(sku.price * quantity, sku.currency);
+
+      let rawPrice = sku ? sku.price : product.metadata.price
+
+      let price = this.formatPrice(rawPrice, 'usd');
+      let lineItemPrice = this.formatPrice(rawPrice * quantity, 'usd');
+
       let lineItem = document.createElement('div');
       lineItem.classList.add('line-item');
-      // lineItem.innerHTML = `
-        // <img class="image" src="/images/products/${product.id}.png" alt="${product.name}">
       lineItem.innerHTML = `
         <img class="image" src="/images/products/pins.png" alt="${product.name}">
         <div class="label">
           <p class="product">${product.name}</p>
-          <p class="sku">${Object.values(sku.attributes).join(' ')}</p>
         </div>
-        <p class="count">${quantity} x ${skuPrice}</p>
+        <p class="count">${quantity} x ${price}</p>
         <p class="price">${lineItemPrice}</p>`;
       orderItems.appendChild(lineItem);
-      currency = sku.currency;
+      currency = 'usd';
       this.lineItems.push({
         product: product.id,
-        sku: sku.id,
+        sku: sku ? sku.id : '',
         quantity,
       });
     }
     // Add the subtotal and total to the payment summary.
-    const total = this.formatPrice(this.getPaymentTotal(), currency);
+    const total = this.formatPrice(this.getPaymentTotal(), 'usd');
     orderTotal.querySelector('[data-subtotal]').innerText = total;
     orderTotal.querySelector('[data-total]').innerText = total;
   }
